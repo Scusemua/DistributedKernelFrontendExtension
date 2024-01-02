@@ -1,5 +1,5 @@
 {
-    "name": "jupyterlab_apod",
+    "name": "distributed_kernel_persistent_id",
     "version": "0.1.5",
     "description": "Set a persistent ID for the given notebook/kernel.",
     "keywords": [
@@ -37,7 +37,7 @@
         "clean": "jlpm clean:lib",
         "clean:lib": "rimraf lib tsconfig.tsbuildinfo",
         "clean:lintcache": "rimraf .eslintcache .stylelintcache",
-        "clean:labextension": "rimraf jupyterlab_apod/labextension jupyterlab_apod/_version.py",
+        "clean:labextension": "rimraf distributed_kernel_persistent_id/labextension distributed_kernel_persistent_id/_version.py",
         "clean:all": "jlpm clean:lib && jlpm clean:labextension && jlpm clean:lintcache",
         "eslint": "jlpm eslint:check --fix",
         "eslint:check": "eslint . --cache --ext .ts,.tsx",
@@ -100,7 +100,7 @@
     },
     "jupyterlab": {
         "extension": true,
-        "outputDir": "jupyterlab_apod/labextension"
+        "outputDir": "distributed_kernel_persistent_id/labextension"
     },
     "eslintIgnore": [
         "node_modules",

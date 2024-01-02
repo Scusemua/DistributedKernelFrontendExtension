@@ -2,7 +2,7 @@
  * Example of [Jest](https://jestjs.io/docs/getting-started) unit tests
  */
 
-describe('jupyterlab_apod', () => {
+describe('distributed_kernel_persistent_id', () => {
   it('should be tested', () => {
     expect(1 + 1).toEqual(2);
   });

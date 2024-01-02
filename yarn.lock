@@ -7183,9 +7183,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jupyterlab_apod@workspace:.":
+"distributed_kernel_persistent_id@workspace:.":
   version: 0.0.0-use.local
-  resolution: "jupyterlab_apod@workspace:."
+  resolution: "distributed_kernel_persistent_id@workspace:."
   dependencies:
     "@jupyterlab/application": ^4.0.9
     "@jupyterlab/apputils": ^4.1.9

@@ -16,10 +16,10 @@ import { v4 as uuidv4 } from 'uuid';
 // import { CodeMirrorEditorFactory } from '@jupyterlab/codemirror';
 
 /**
- * Initialization data for the jupyterlab_apod extension.
+ * Initialization data for the distributed_kernel_persistent_id extension.
  */
 const plugin: JupyterFrontEndPlugin<void> = {
-  id: 'jupyterlab_apod:plugin',
+  id: 'distributed_kernel_persistent_id:plugin',
   requires: [INotebookTracker],
   description: 'Provides an ID that is associated with a given IPYNB file. This enables the restoration of runtime states when the associated notebook is opened.',
   autoStart: true,
@@ -27,7 +27,7 @@ const plugin: JupyterFrontEndPlugin<void> = {
 };
 
 function activate(app: JupyterFrontEnd, notebooks: INotebookTracker): void {
-  console.log('JupyterLab extension jupyterlab_apod v0.1.5 is activated!');
+  console.log('JupyterLab extension distributed_kernel_persistent_id v0.1.5 is activated!');
 
   notebooks.widgetAdded.connect((sender, nbPanel: NotebookPanel) => {
     console.log("Jupyter Notebook widget changed!")

@@ -3,7 +3,7 @@ requires = ["hatchling>=1.5.0", "jupyterlab>=4.0.0,<5", "hatch-nodejs-version>=0
 build-backend = "hatchling.build"
 
 [project]
-name = "jupyterlab_apod"
+name = "distributed_kernel_persistent_id"
 readme = "README.md"
 license = { file = "LICENSE" }
 requires-python = ">=3.8"
@@ -33,24 +33,24 @@ source = "nodejs"
 fields = ["description", "authors", "urls"]
 
 [tool.hatch.build.targets.sdist]
-artifacts = ["jupyterlab_apod/labextension"]
+artifacts = ["distributed_kernel_persistent_id/labextension"]
 exclude = [".github", "binder"]
 
 [tool.hatch.build.targets.wheel.shared-data]
-"jupyterlab_apod/labextension" = "share/jupyter/labextensions/jupyterlab_apod"
-"install.json" = "share/jupyter/labextensions/jupyterlab_apod/install.json"
+"distributed_kernel_persistent_id/labextension" = "share/jupyter/labextensions/distributed_kernel_persistent_id"
+"install.json" = "share/jupyter/labextensions/distributed_kernel_persistent_id/install.json"
 
 [tool.hatch.build.hooks.version]
-path = "jupyterlab_apod/_version.py"
+path = "distributed_kernel_persistent_id/_version.py"
 
 [tool.hatch.build.hooks.jupyter-builder]
 dependencies = ["hatch-jupyter-builder>=0.5"]
 build-function = "hatch_jupyter_builder.npm_builder"
 ensured-targets = [
-    "jupyterlab_apod/labextension/static/style.js",
-    "jupyterlab_apod/labextension/package.json",
+    "distributed_kernel_persistent_id/labextension/static/style.js",
+    "distributed_kernel_persistent_id/labextension/package.json",
 ]
-skip-if-exists = ["jupyterlab_apod/labextension/static/style.js"]
+skip-if-exists = ["distributed_kernel_persistent_id/labextension/static/style.js"]
 
 [tool.hatch.build.hooks.jupyter-builder.build-kwargs]
 build_cmd = "build:prod"
@@ -60,7 +60,7 @@ npm = ["jlpm"]
 build_cmd = "install:extension"
 npm = ["jlpm"]
 source_dir = "src"
-build_dir = "jupyterlab_apod/labextension"
+build_dir = "distributed_kernel_persistent_id/labextension"
 
 [tool.jupyter-releaser.options]
 version_cmd = "hatch version"
