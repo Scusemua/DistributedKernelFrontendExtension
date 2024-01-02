@@ -27,7 +27,7 @@ const plugin: JupyterFrontEndPlugin<void> = {
 };
 
 function activate(app: JupyterFrontEnd, notebooks: INotebookTracker): void {
-  console.log('JupyterLab extension jupyterlab_apod v0.1.3 is activated!');
+  console.log('JupyterLab extension jupyterlab_apod v0.1.5 is activated!');
 
   notebooks.widgetAdded.connect((sender, nbPanel: NotebookPanel) => {
     console.log("Jupyter Notebook widget changed!")
@@ -53,7 +53,34 @@ function activate(app: JupyterFrontEnd, notebooks: INotebookTracker): void {
               codeToExecute += "\nreplica_id=\"" + notebookModel.getMetadata("replica_id") + "\""
             }
 
-            console.log("Will be executing the following code:\n", codeToExecute);
+            console.log("Saving notebook now.");
+
+            app.commands.execute('docmanager:save', {
+              path: notebooks.currentWidget?.context.path
+            });
+
+            var kernelConnection = session.session?.kernel;
+            if (kernelConnection != null) {
+              console.log("Will be executing the following code:\n", codeToExecute);
+              var future = kernelConnection.requestExecute({ code: codeToExecute});
+              console.log("Requested code execution. Waiting for result now.");
+
+              future.onIOPub  = (msg) => {
+                const msgType = msg.header.msg_type;
+                switch (msgType) {
+                  case 'execute_result':
+                  case 'display_data':
+                  case 'update_display_data':
+                    var result = msg.content;
+                    console.log("Result:\n", result);       
+                    break;
+                  default:
+                    break;
+                }
+              }
+            } else {
+              console.error("SessionContext does not have access to the Kernel. Cannot execute Python code.");
+            }
           }
         }
       }
