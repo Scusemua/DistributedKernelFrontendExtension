@@ -5,7 +5,7 @@ import {
 
 import { INotebookTracker, NotebookPanel, INotebookModel } from '@jupyterlab/notebook';
 
-import { KernelConnector } from './kernel_connector';
+import { KernelCodeExecutor } from './kernel_code_executor';
 
 import { v4 as uuidv4 } from 'uuid';
 
@@ -27,13 +27,13 @@ const plugin: JupyterFrontEndPlugin<void> = {
 };
 
 function activate(app: JupyterFrontEnd, notebooks: INotebookTracker): void {
-  console.log('JupyterLab extension distributed_kernel_persistent_id v0.1.5 is activated!');
+  console.log('JupyterLab extension distributed_kernel_persistent_id v0.1.7 is activated!');
 
   notebooks.widgetAdded.connect((sender, nbPanel: NotebookPanel) => {
     console.log("Jupyter Notebook widget changed!")
 
     const session = nbPanel.sessionContext;
-    const connector = new KernelConnector({ session });
+    const connector = new KernelCodeExecutor({ session });
 
     connector.ready.then(
       async () => {
@@ -59,27 +59,22 @@ function activate(app: JupyterFrontEnd, notebooks: INotebookTracker): void {
               path: notebooks.currentWidget?.context.path
             });
 
-            var kernelConnection = session.session?.kernel;
-            if (kernelConnection != null) {
-              console.log("Will be executing the following code:\n", codeToExecute);
-              var future = kernelConnection.requestExecute({ code: codeToExecute});
-              console.log("Requested code execution. Waiting for result now.");
+            console.log("Will be executing the following code:\n", codeToExecute);
+            var future = connector.execute({ code: codeToExecute});
+            console.log("Requested code execution. Waiting for result now.");
 
-              future.onIOPub  = (msg) => {
-                const msgType = msg.header.msg_type;
-                switch (msgType) {
-                  case 'execute_result':
-                  case 'display_data':
-                  case 'update_display_data':
-                    var result = msg.content;
-                    console.log("Result:\n", result);       
-                    break;
-                  default:
-                    break;
-                }
+            future.onIOPub  = (msg) => {
+              const msgType = msg.header.msg_type;
+              switch (msgType) {
+                case 'execute_result':
+                case 'display_data':
+                case 'update_display_data':
+                  var result = msg.content;
+                  console.log("Result:\n", result);       
+                  break;
+                default:
+                  break;
               }
-            } else {
-              console.error("SessionContext does not have access to the Kernel. Cannot execute Python code.");
             }
           }
         }
