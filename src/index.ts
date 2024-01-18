@@ -34,7 +34,7 @@ function activate(app: JupyterFrontEnd, notebooks: INotebookTracker): void {
 
     const session = nbPanel.sessionContext;
     const connector = new KernelCodeExecutor({ session });
-
+    
     connector.ready.then(
       async () => {
         console.log("Notebook Kernel is ready!");
@@ -59,7 +59,7 @@ function activate(app: JupyterFrontEnd, notebooks: INotebookTracker): void {
               path: notebooks.currentWidget?.context.path
             });
 
-            console.log("Will be executing the following code:\n", codeToExecute);
+            console.log("Notebook saved. Will be executing the following code:\n", codeToExecute);
             var future = connector.execute({ code: codeToExecute});
             console.log("Requested code execution. Waiting for result now.");
 
@@ -67,12 +67,20 @@ function activate(app: JupyterFrontEnd, notebooks: INotebookTracker): void {
               const msgType = msg.header.msg_type;
               switch (msgType) {
                 case 'execute_result':
+                  var result = msg.content;
+                  console.log("execute_result result:\n", result);       
+                  break;
                 case 'display_data':
+                  var result = msg.content;
+                  console.log("display_data result:\n", result);       
+                  break;
                 case 'update_display_data':
                   var result = msg.content;
-                  console.log("Result:\n", result);       
+                  console.log("update_display_data result:\n", result);       
                   break;
                 default:
+                  var result = msg.content;
+                  console.log("default-case result:\n", result);   
                   break;
               }
             }
